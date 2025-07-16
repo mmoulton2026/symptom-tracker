@@ -27,7 +27,7 @@ param tenantId string = ''
 param cosmosDbDatabaseName string = 'SymptomTrackerDB'
 
 @description('Cosmos DB container name')
-param cosmosDbContainerName string = 'logs'
+param cosmosDbContainerName string = 'items'
 
 // Variables
 var abbrs = loadJsonContent('abbreviations.json')
