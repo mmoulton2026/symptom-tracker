@@ -1,4 +1,4 @@
-import { Configuration, LogLevel } from "@azure/msal-browser";
+import { LogLevel } from "@azure/msal-browser";
 
 // Check if running locally
 const isLocalhost = window.location.hostname === "localhost";
@@ -33,6 +33,9 @@ export const msalConfig = {
             return;
           case LogLevel.Warning:
             console.warn(message);
+            return;
+          default:
+            console.log(message);
             return;
         }
       },
