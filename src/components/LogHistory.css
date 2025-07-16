@@ -1,0 +1,33 @@
+.log-history {
+  margin-top: 20px;
+}
+
+.log-history h2 {
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.log-item {
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+  padding: 15px;
+  margin-bottom: 10px;
+}
+
+.log-item h3 {
+  margin: 0 0 10px 0;
+  color: #495057;
+}
+
+.log-item p {
+  margin: 5px 0;
+  color: #6c757d;
+}
+
+.no-logs {
+  text-align: center;
+  color: #6c757d;
+  font-style: italic;
+  padding: 20px;
+}

@@ -1,0 +1,15 @@
+name: symptom-tracker
+metadata:
+  template: symptom-tracker@0.0.1-beta
+
+services:
+  frontend:
+    project: .
+    language: js
+    host: staticwebapp
+    dist: build
+    
+  backend-api:
+    project: ../symptom-api
+    language: js
+    host: function
