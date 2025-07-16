@@ -9,7 +9,7 @@ export const msalConfig = {
     authority: "https://login.microsoftonline.com/36794658-f219-4ad4-af7b-1b68d1900443", // University of Maine System tenant
     redirectUri: isLocalhost
       ? "http://localhost:3000/auth/callback"
-      : "https://black-hill-028305a0f.1.azurestaticapps.net/auth/callback",
+      : "https://gentle-desert-05e0cbe0f.1.azurestaticapps.net/auth/callback",
   },
   cache: {
     cacheLocation: "sessionStorage",  // Can be "localStorage" or "sessionStorage" for token caching
