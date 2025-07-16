@@ -120,6 +120,35 @@ function Dashboard() {
     }
   };
 
+  // Test API connection
+  const testApiConnection = async () => {
+    console.log('=== TESTING API CONNECTION ===');
+    console.log('API_BASE_URL:', API_BASE_URL);
+    console.log('Testing with user:', user);
+    
+    try {
+      const testUrl = `${API_BASE_URL}/getlogs?userId=${encodeURIComponent(user || 'test')}`;
+      console.log('Test URL:', testUrl);
+      
+      const response = await fetch(testUrl);
+      console.log('Test Response Status:', response.status);
+      console.log('Test Response OK:', response.ok);
+      
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Test Response Data:', data);
+        alert(`API Test SUCCESS! Found ${data.logs?.length || 0} logs`);
+      } else {
+        const errorText = await response.text();
+        console.log('Test Error Response:', errorText);
+        alert(`API Test FAILED: ${response.status} - ${errorText}`);
+      }
+    } catch (error) {
+      console.error('Test API Error:', error);
+      alert(`API Test ERROR: ${error.message}`);
+    }
+  };
+
   return (
     <div style={{ padding: "20px" }}>
       <div style={{ 
@@ -136,9 +165,27 @@ function Dashboard() {
             Track your symptoms and monitor your health journey
           </p>
         </div>
-        <button 
-          onClick={handleLogout}
-          style={{
+        </div>
+        <div>
+          <button 
+            onClick={testApiConnection}
+            style={{
+              backgroundColor: '#007bff',
+              color: 'white',
+              border: 'none',
+              padding: '8px 16px',
+              borderRadius: '6px',
+              cursor: 'pointer',
+              fontSize: '12px',
+              fontWeight: '500',
+              marginRight: '10px'
+            }}
+          >
+            Test API
+          </button>
+          <button 
+            onClick={handleLogout}
+            style={{
             backgroundColor: '#dc3545',
             color: 'white',
             border: 'none',
