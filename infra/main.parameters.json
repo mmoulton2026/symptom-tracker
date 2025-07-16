@@ -12,10 +12,10 @@
       "value": "rg-${AZURE_ENV_NAME}"
     },
     "clientId": {
-      "value": "${REACT_APP_CLIENT_ID}"
+      "value": "48aecf06-bffd-4bee-91d2-9b21c86e9298"
     },
     "tenantId": {
-      "value": "${REACT_APP_TENANT_ID}"
+      "value": "36794658-f219-4ad4-af7b-1b68d1900443"
     },
     "cosmosDbDatabaseName": {
       "value": "SymptomTrackerDB"

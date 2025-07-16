@@ -5,7 +5,8 @@ import LogHistory from './LogHistory';
 import ExportButton from './ExportButton';
 
 // API base URL
-const API_BASE_URL = "http://localhost:7071/api";
+// Use environment variable or fallback to localhost for development
+const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:7071/api";
 
 function Dashboard() {
   const { instance, accounts } = useMsal();
@@ -37,17 +38,42 @@ function Dashboard() {
   const fetchLogs = async (username) => {
     setLoading(true);
     try {
-      const response = await fetch(`${API_BASE_URL}/getLogs?userId=${encodeURIComponent(username)}`);
-      if (response.ok) {
-        const data = await response.json();
-        setLogs(data.logs || []);
+      // Try to fetch from API, fall back to mock data if API is not available
+      if (API_BASE_URL.includes('localhost')) {
+        // For development - try local API
+        const response = await fetch(`${API_BASE_URL}/getLogs?userId=${encodeURIComponent(username)}`);
+        if (response.ok) {
+          const data = await response.json();
+          setLogs(data.logs || []);
+        } else {
+          throw new Error('Local API not available');
+        }
       } else {
-        console.error('Failed to fetch logs:', response.statusText);
-        setLogs([]);
+        // For production - use mock data until backend is deployed
+        setLogs([
+          {
+            id: 'demo-1',
+            date: new Date().toISOString().split('T')[0],
+            time: '10:00',
+            notes: 'Demo entry - Authentication working! Backend deployment coming soon.',
+            userId: username,
+            timestamp: new Date().toISOString()
+          }
+        ]);
       }
     } catch (error) {
-      console.error('Error fetching logs:', error);
-      setLogs([]);
+      console.log('Using demo data - backend not yet available');
+      // Use demo data
+      setLogs([
+        {
+          id: 'demo-1',
+          date: new Date().toISOString().split('T')[0],
+          time: '10:00',
+          notes: `Welcome ${username}! This is demo data. Backend deployment in progress.`,
+          userId: username,
+          timestamp: new Date().toISOString()
+        }
+      ]);
     } finally {
       setLoading(false);
     }

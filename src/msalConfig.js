@@ -4,7 +4,7 @@ export const msalConfig = {
   auth: {
     clientId: "48aecf06-bffd-4bee-91d2-9b21c86e9298",  // Your Symptom Tracker App client ID
     authority: "https://login.microsoftonline.com/36794658-f219-4ad4-af7b-1b68d1900443", // University of Maine System tenant
-    redirectUri: "http://localhost:3000",  // Main domain for popup authentication
+    redirectUri: window.location.origin,  // Works for both local and deployed
   },
   cache: {
     cacheLocation: "sessionStorage",  // Can be "localStorage" or "sessionStorage" for token caching
