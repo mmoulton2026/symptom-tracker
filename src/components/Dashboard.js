@@ -6,7 +6,7 @@ import ExportButton from './ExportButton';
 
 // API base URL
 // Use environment variable or fallback to localhost for development
-const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:7071/api";
+const API_BASE_URL = process.env.REACT_APP_API_URL || (process.env.NODE_ENV === 'production' ? "https://func2jtunws2rvboc.azurewebsites.net/api" : "http://localhost:7071/api");
 
 function Dashboard() {
   const { instance, accounts } = useMsal();
@@ -38,28 +38,13 @@ function Dashboard() {
   const fetchLogs = async (username) => {
     setLoading(true);
     try {
-      // Try to fetch from API, fall back to mock data if API is not available
-      if (API_BASE_URL.includes('localhost')) {
-        // For development - try local API
-        const response = await fetch(`${API_BASE_URL}/getLogs?userId=${encodeURIComponent(username)}`);
-        if (response.ok) {
-          const data = await response.json();
-          setLogs(data.logs || []);
-        } else {
-          throw new Error('Local API not available');
-        }
+      // Try to fetch from API first
+      const response = await fetch(`${API_BASE_URL}/getlogs?userId=${encodeURIComponent(username)}`);
+      if (response.ok) {
+        const data = await response.json();
+        setLogs(data.logs || []);
       } else {
-        // For production - use mock data until backend is deployed
-        setLogs([
-          {
-            id: 'demo-1',
-            date: new Date().toISOString().split('T')[0],
-            time: '10:00',
-            notes: 'Demo entry - Authentication working! Backend deployment coming soon.',
-            userId: username,
-            timestamp: new Date().toISOString()
-          }
-        ]);
+        throw new Error('API call failed');
       }
     } catch (error) {
       console.log('Using demo data - backend not yet available');
@@ -88,7 +73,7 @@ function Dashboard() {
         username: user
       };
 
-      const response = await fetch(`${API_BASE_URL}/addLog`, {
+      const response = await fetch(`${API_BASE_URL}/addlog`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
