@@ -8,6 +8,11 @@ import ExportButton from './ExportButton';
 // Use environment variable or fallback to localhost for development
 const API_BASE_URL = process.env.REACT_APP_API_URL || (process.env.NODE_ENV === 'production' ? "https://func2jtunws2rvboc.azurewebsites.net/api" : "http://localhost:7071/api");
 
+console.log('Dashboard loaded with:');
+console.log('NODE_ENV:', process.env.NODE_ENV);
+console.log('REACT_APP_API_URL:', process.env.REACT_APP_API_URL);
+console.log('Final API_BASE_URL:', API_BASE_URL);
+
 function Dashboard() {
   const { instance, accounts } = useMsal();
   const [user, setUser] = useState(null);
@@ -38,16 +43,25 @@ function Dashboard() {
   const fetchLogs = async (username) => {
     setLoading(true);
     try {
+      console.log('Fetching logs for user:', username);
+      console.log('API URL:', `${API_BASE_URL}/getlogs`);
+      
       // Try to fetch from API first
       const response = await fetch(`${API_BASE_URL}/getlogs?userId=${encodeURIComponent(username)}`);
+      
+      console.log('Fetch response status:', response.status);
+      console.log('Fetch response ok:', response.ok);
+      
       if (response.ok) {
         const data = await response.json();
+        console.log('Fetched data:', data);
         setLogs(data.logs || []);
       } else {
+        console.error('API call failed with status:', response.status);
         throw new Error('API call failed');
       }
     } catch (error) {
-      console.log('Using demo data - backend not yet available');
+      console.log('Using demo data - backend not available:', error);
       // Use demo data
       setLogs([
         {
@@ -73,6 +87,9 @@ function Dashboard() {
         username: user
       };
 
+      console.log('Attempting to add log:', logData);
+      console.log('API URL:', `${API_BASE_URL}/addlog`);
+
       const response = await fetch(`${API_BASE_URL}/addlog`, {
         method: 'POST',
         headers: {
@@ -81,12 +98,18 @@ function Dashboard() {
         body: JSON.stringify(logData),
       });
 
+      console.log('Response status:', response.status);
+      console.log('Response ok:', response.ok);
+
       if (response.ok) {
+        const responseData = await response.json();
+        console.log('Success response:', responseData);
         // Refresh logs after adding
         await fetchLogs(user);
         alert('Symptom log added successfully!');
       } else {
         const errorData = await response.json();
+        console.error('Error response:', errorData);
         alert('Error adding log: ' + (errorData.error || response.statusText));
       }
     } catch (error) {
